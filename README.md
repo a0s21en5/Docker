@@ -144,3 +144,66 @@ docker build -t <application_name>:<tag_name> .
 ```bash
 docker run -d -p <port_number>:<port_number> --network <network_name> <application_name>:<tag_name>
 ```
+## 📦 Docker Volumes & Storage
+
+Manage persistent storage in Docker using volumes.
+
+---
+
+### 🔍 Volume Commands
+
+```bash
+docker volume ls
+```
+> List all Docker volumes.
+
+```bash
+docker volume create <volume_name>
+```
+> Create a new volume.
+
+```bash
+docker volume inspect <volume_name>
+```
+> View detailed info about a volume (e.g., MountPoint).
+
+---
+
+### 📦 MountPoint
+
+To find the **MountPoint** (where the volume is stored on the host), inspect the volume:
+
+```bash
+docker volume inspect <volume_name>
+```
+
+Look for the `"Mountpoint"` field in the output.
+
+---
+
+### 🧼 Container Cleanup
+
+```bash
+docker ps
+```
+> Show running containers.
+
+```bash
+docker stop <container_id> && docker rm <container_id>
+```
+> Stop and remove a container.
+
+---
+
+### 🐳 Run SQL Server with Volume
+
+```bash
+docker run -d \
+   --name sqlserver2022 \
+   --network <network_name> \
+   -v <volume_name>:/var/opt/mssql \
+   -e "ACCEPT_EULA=Y" \
+   -e "MSSQL_SA_PASSWORD=Your@StrongPassword" \
+   mcr.microsoft.com/mssql/server:2022-latest
+```
+> Run SQL Server 2022 in a container with volume for persistent storage.
