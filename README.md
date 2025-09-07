@@ -1,15 +1,46 @@
 ---
+
 # Docker Cheat Sheet & Quick Reference
 
+
 ## Table of Contents
-1. [What is Docker?](#what-is-docker)
+1. [What is Docker?](#-what-is-docker)
 2. [Docker Architecture](#docker-architecture)
+  - [Docker Engine](#1-docker-engine)
+  - [Docker CLI](#2-docker-cli)
+  - [Docker Client](#3-docker-client)
 3. [Docker Workflow](#docker-workflow)
 4. [Essential Docker Commands](#essential-docker-commands)
+  - [System Setup](#system-setup)
+  - [Login & Pull Image](#login--pull-image)
+  - [Run MySQL Container](#run-mysql-container)
+  - [Access Running Container](#access-running-container)
+  - [Stop a Container](#stop-a-container)
+  - [Build & Run Custom Docker Image](#build--run-custom-docker-image)
+  - [Logs & Monitoring](#logs--monitoring)
 5. [Docker Networking](#docker-networking)
+  - [Network Types](#network-types)
+  - [Network Commands](#network-commands)
 6. [Common Scenarios](#common-scenarios)
-7. [Volume Commands](#volume-commands)
-8. [Docker Compose](#docker-compose)
+  - [Run SQL Server Container](#run-sql-server-container)
+  - [Connect to SQL Server Inside Container](#connect-to-sql-server-inside-container)
+  - [Build a Docker Image](#build-a-docker-image)
+  - [Run an Application Container](#run-an-application-container)
+7. [Docker Volumes & Storage](#-docker-volumes--storage)
+  - [Volume Commands](#-volume-commands)
+  - [MountPoint](#mountpoint)
+8. [Container Cleanup](#-container-cleanup)
+9. [Run SQL Server with Volume](#-run-sql-server-with-volume)
+10. [Docker Compose - Short Overview](#docker-compose---short-overview)
+  - [What It Does](#-what-it-does)
+  - [Example docker-composeyml](#-example-docker-composeyml)
+  - [Common Commands](#-common-commands)
+11. [System Cleanup](#-system-cleanup)
+12. [Image Management](#-image-management)
+13. [Container Management](#-container-management)
+
+---
+
 
 ---
 
@@ -21,17 +52,17 @@ Docker is a platform for building, shipping, and running applications inside con
 ## Docker Architecture
 
 ### 1. Docker Engine
-* Core part of Docker enabling containerization
-   * **Docker Daemon (`dockerd`)**: Manages images, containers, volumes, networks
-   * **containerd**: Container runtime used by Docker daemon
+Core part of Docker enabling containerization
+- **Docker Daemon (`dockerd`)**: Manages images, containers, volumes, networks
+- **containerd**: Container runtime used by Docker daemon
 
 ### 2. Docker CLI
-* Command-line interface to interact with Docker
-* Sends commands to Docker daemon
+Command-line interface to interact with Docker
+- Sends commands to Docker daemon
 
 ### 3. Docker Client
-* CLI or API interface for users
-* Communicates with `dockerd`
+CLI or API interface for users
+- Communicates with `dockerd`
 
 ---
 
@@ -40,7 +71,6 @@ Docker is a platform for building, shipping, and running applications inside con
 ```text
 Dockerfile → Image → Container
 ```
-
 1. **Dockerfile**: Instructions to build a Docker image (`FROM`, `RUN`, `COPY`, `CMD`, etc.)
 2. **Image**: Read-only template with app code, runtime, dependencies
 3. **Container**: Executable package with everything needed to run the software
@@ -107,13 +137,13 @@ docker attach <container-id>         # Attach terminal to running container
 ## Docker Networking
 
 ### Network Types
-* **Host**: Shares host network (e.g., `80:80`)
-* **Bridge (Default)**: Container-to-container communication on same bridge
-* **User-defined Bridge**: Custom, secure, recommended for multi-container apps
-* **None**: Disables networking
-* **MACVLAN**: Assigns MAC address, appears as physical device
-* **IPVLAN**: Assigns IP from host network
-* **Overlay**: Multi-host networking
+- **Host**: Shares host network (e.g., `80:80`)
+- **Bridge (Default)**: Container-to-container communication on same bridge
+- **User-defined Bridge**: Custom, secure, recommended for multi-container apps
+- **None**: Disables networking
+- **MACVLAN**: Assigns MAC address, appears as physical device
+- **IPVLAN**: Assigns IP from host network
+- **Overlay**: Multi-host networking
 
 ### Network Commands
 ```bash
@@ -146,6 +176,9 @@ docker build -t <application_name>:<tag_name> .
 ```bash
 docker run -d -p <port_number>:<port_number> --network <network_name> <application_name>:<tag_name>
 ```
+
+---
+
 ## 📦 Docker Volumes & Storage
 
 Manage persistent storage in Docker using volumes.
@@ -210,8 +243,9 @@ docker run -d \
 ```
 > Run SQL Server 2022 in a container with volume for persistent storage.
 
+---
 
-# Docker Compose
+# Docker Compose - Short Overview
 
 **Docker Compose** is a tool that lets you **define and run multi-container Docker applications** using a single YAML file (`docker-compose.yml`).
 
@@ -230,9 +264,8 @@ services:
       context: ./path-to-web-app
       dockerfile: Dockerfile
     ports:
-
-      retries: 5
-      start_period: 30s
+      # ...
+    networks:
       - app-network
 
   db:
@@ -258,7 +291,7 @@ volumes:
 
 networks:
   app-network:
-````
+```
 
 ## 🚀 Common Commands
 
