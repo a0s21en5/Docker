@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  two-tier-web-app:
+    container_name: two-tier-web-app
+    build:
+      context: ./two-tier-web-app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver2022;Database=TwoTierDb;User=sa;Password=Your@StrongPassword;
+    depends_on:
+      sqlserver2022:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - two-tier
+
+  sqlserver2022:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver2022
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Your@StrongPassword
+    ports:
+      - "1433:1433"
+    volumes:
+      - two-tier:/var/opt/mssql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Your@StrongPassword' -Q 'SELECT 1' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - two-tier
+
+volumes:
+  two-tier:
+
+networks:
+  two-tier:
