@@ -8,6 +8,8 @@
 4. [Essential Docker Commands](#essential-docker-commands)
 5. [Docker Networking](#docker-networking)
 6. [Common Scenarios](#common-scenarios)
+7. [Volume Commands](#volume-commands)
+8. [Docker Compose](#docker-compose)
 
 ---
 
@@ -207,3 +209,98 @@ docker run -d \
    mcr.microsoft.com/mssql/server:2022-latest
 ```
 > Run SQL Server 2022 in a container with volume for persistent storage.
+
+
+# Docker Compose
+
+**Docker Compose** is a tool that lets you **define and run multi-container Docker applications** using a single YAML file (`docker-compose.yml`).
+
+## 🔧 What It Does
+- Defines multiple services (e.g., web app, database) in one file.
+- Manages networking, volumes, and dependencies.
+- Starts everything with one command.
+
+## 📄 Example `docker-compose.yml`
+```yaml
+version: '3.8'
+
+services:
+  web-app:
+    build:
+      context: ./path-to-web-app
+      dockerfile: Dockerfile
+    ports:
+
+      retries: 5
+      start_period: 30s
+      - app-network
+
+  db:
+    image: your-db-image:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - DB_PASSWORD=yourpassword
+    ports:
+      - "1433:1433"
+    volumes:
+      - db-data:/var/lib/database
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "your-db-healthcheck-command || exit 1"]
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app-network
+
+volumes:
+  db-data:
+
+networks:
+  app-network:
+````
+
+## 🚀 Common Commands
+
+* **Start services:** `docker-compose up`
+* **Stop services:** `docker-compose down`
+* **Rebuild services:** `docker-compose up --build`
+
+---
+
+## 🧹 System Cleanup
+
+### `docker system prune`
+Cleans up unused Docker objects:
+- Stopped containers
+- Unused networks
+- Dangling images
+- Build cache
+
+**⚠️ Use with caution. This is irreversible.**
+
+---
+
+## 🧱 Image Management
+
+### `docker rmi <image_id>`
+Removes a Docker image by its image ID.
+
+### `docker images -aq`
+Lists all image IDs in quiet mode (useful for scripting).
+
+### `docker rmi -f $(docker images -aq)`
+Force removes **all** Docker images.  
+**⚠️ Use with extreme caution. This deletes all local images.**
+
+---
+
+## 📦 Container Management
+
+### `docker ps -a`
+Lists all containers (running and stopped).
+
+### `docker attach <container_id>`
+Attaches your terminal to a running container's standard input/output.
+
+**💡 Tip:** Use `Ctrl + P` then `Ctrl + Q` to detach without stopping the container.
