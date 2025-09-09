@@ -1,4 +1,5 @@
-## 🐳 What is Docker?
+
+# 🐳 What is Docker?
 
 Docker is a platform for building, shipping, and running applications inside containers. Containers are lightweight, portable, and efficient, sharing the host OS kernel.
 
@@ -228,7 +229,7 @@ docker run -d \
 
 ---
 
-# Docker Compose - Short Overview
+## Docker Compose - Short Overview
 
 **Docker Compose** is a tool that lets you **define and run multi-container Docker applications** using a single YAML file (`docker-compose.yml`).
 
@@ -330,7 +331,15 @@ Attaches your terminal to a running container's standard input/output.
 
 **💡 Tip:** Use `Ctrl + P` then `Ctrl + Q` to detach without stopping the container.
 
-# 🐳 Docker Registry: Push an Image to Docker Hub
+### `nohup docker attach <container_id> &`
+
+- **`nohup`**: Prevents the process from being terminated when the terminal closes.
+- **`docker attach <container_id>`**: Connects your terminal to a running Docker container's standard input, output, and error streams.
+- **`&`**: Runs the command in the background.
+
+📌 **Purpose**: Keeps the Docker container attached in the background even after closing the terminal.
+
+## 🐳 Docker Registry: Push an Image to Docker Hub
 
 ## 1. 🔐 Login to Docker Hub
 
@@ -378,3 +387,19 @@ Uploads the tagged image to your Docker Hub repository.
 docker image tag myapp:latest johndoe/myapp:latest
 docker push johndoe/myapp:latest
 ```
+
+## Multi-Stage Docker Builds
+
+**Multi-Stage Docker Builds** allow you to use multiple `FROM` statements in a single Dockerfile to separate the **🔧 build environment** from the **🚀 runtime environment**.
+
+This approach helps create Docker images that are:
+
+- 🧼 **Smaller** (only essential files included)
+- 🔒 **More secure** (no compilers or build tools in production)
+- ⚡ **Faster** to deploy and transfer
+
+### ✅ Benefits
+
+- 📦 Reduces final image size
+- 🛠️ Improves build performance
+- 🧪 Keeps runtime clean from build dependencies
