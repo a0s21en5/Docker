@@ -40,9 +40,9 @@ Dockerfile → Image → Container
 
 ---
 
-## Essential Docker Commands
+## 🛠️ Essential Docker Commands
 
-### System Setup
+### ⚙️ System Setup
 
 ```bash
 whoami                       # Show current user
@@ -52,7 +52,7 @@ sudo usermod -aG docker $USER # Add user to Docker group
 newgrp docker                # Refresh group membership
 ```
 
-### Login & Pull Image
+### 🔑 Login & Pull Image
 
 ```bash
 docker login                 # Authenticate with Docker Hub
@@ -61,7 +61,7 @@ docker images                # List local images
 docker ps                    # List running containers
 ```
 
-### Run MySQL Container
+### 🐬 Run MySQL Container
 
 ```bash
 docker run -e MYSQL_ROOT_PASSWORD=root mysql
@@ -69,7 +69,7 @@ docker run -e MYSQL_ROOT_PASSWORD=root mysql
 # MYSQL_ROOT_PASSWORD=root sets MySQL root password
 ```
 
-### Access Running Container
+### 🖥️ Access Running Container
 
 ```bash
 docker ps                            # Get container ID
@@ -83,13 +83,13 @@ mysql -u root -p                     # Log into MySQL
 # Password: root
 ```
 
-### Stop a Container
+### ⏹️ Stop a Container
 
 ```bash
 docker stop <container-id>
 ```
 
-### Build & Run Custom Docker Image
+### 🏗️ Build & Run Custom Docker Image
 
 ```bash
 docker build -t dotnet-app .         # Build image from Dockerfile
@@ -97,7 +97,7 @@ docker images                        # Verify image exists
 docker run dotnet-app                # Run the container
 ```
 
-### Logs & Monitoring
+### 📋 Logs & Monitoring
 
 ```bash
 docker logs <container-id>           # View container logs
@@ -106,9 +106,9 @@ docker attach <container-id>         # Attach terminal to running container
 
 ---
 
-## Docker Networking
+## 🌐 Docker Networking
 
-### Network Types
+### 🕸️ Network Types
 
 - **Host**: Shares host network (e.g., `80:80`)
 - **Bridge (Default)**: Container-to-container communication on same bridge
@@ -118,7 +118,7 @@ docker attach <container-id>         # Attach terminal to running container
 - **IPVLAN**: Assigns IP from host network
 - **Overlay**: Multi-host networking
 
-### Network Commands
+### 🛜 Network Commands
 
 ```bash
 docker network create -d bridge <network_name> # Create custom bridge network
@@ -127,9 +127,9 @@ docker network ls                             # List all networks
 
 ---
 
-## Common Scenarios
+## 💡 Common Scenarios
 
-### Run SQL Server Container
+### 🗄️ Run SQL Server Container
 
 ```bash
 docker run -d --name sqlserver2022 --network <network_name> \
@@ -137,19 +137,19 @@ docker run -d --name sqlserver2022 --network <network_name> \
    mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-### Connect to SQL Server Inside Container
+### 🔗 Connect to SQL Server Inside Container
 
 ```bash
 docker exec -it sqlserver2022 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Your@StrongPassword'
 ```
 
-### Build a Docker Image
+### 🏗️ Build a Docker Image
 
 ```bash
 docker build -t <application_name>:<tag_name> .
 ```
 
-### Run an Application Container
+### 🚀 Run an Application Container
 
 ```bash
 docker run -d -p <port_number>:<port_number> --network <network_name> <application_name>:<tag_name>
@@ -185,7 +185,7 @@ docker volume inspect <volume_name>
 
 ---
 
-### 📦 MountPoint
+### � MountPoint
 
 To find the **MountPoint** (where the volume is stored on the host), inspect the volume:
 
@@ -197,7 +197,7 @@ Look for the `"Mountpoint"` field in the output.
 
 ---
 
-### 🧼 Container Cleanup
+### � Container Cleanup
 
 ```bash
 docker ps
@@ -213,7 +213,7 @@ docker stop <container_id> && docker rm <container_id>
 
 ---
 
-### 🐳 Run SQL Server with Volume
+### �️�🐳 Run SQL Server with Volume
 
 ```bash
 docker run -d \
@@ -229,7 +229,7 @@ docker run -d \
 
 ---
 
-## Docker Compose - Short Overview
+## 🧩 Docker Compose - Short Overview
 
 **Docker Compose** is a tool that lets you **define and run multi-container Docker applications** using a single YAML file (`docker-compose.yml`).
 
@@ -289,7 +289,7 @@ networks:
 
 ## 🧹 System Cleanup
 
-### `docker system prune`
+### 🧹 `docker system prune`
 
 Cleans up unused Docker objects:
 
@@ -304,15 +304,15 @@ Cleans up unused Docker objects:
 
 ## 🧱 Image Management
 
-### `docker rmi <image_id>`
+### 🗑️ `docker rmi <image_id>`
 
 Removes a Docker image by its image ID.
 
-### `docker images -aq`
+### 🔍 `docker images -aq`
 
 Lists all image IDs in quiet mode (useful for scripting).
 
-### `docker rmi -f $(docker images -aq)`
+### ⚠️ `docker rmi -f $(docker images -aq)`
 
 Force removes **all** Docker images.  
 **⚠️ Use with extreme caution. This deletes all local images.**
@@ -321,17 +321,17 @@ Force removes **all** Docker images.
 
 ## 📦 Container Management
 
-### `docker ps -a`
+### 📋 `docker ps -a`
 
 Lists all containers (running and stopped).
 
-### `docker attach <container_id>`
+### 🔗 `docker attach <container_id>`
 
 Attaches your terminal to a running container's standard input/output.
 
 **💡 Tip:** Use `Ctrl + P` then `Ctrl + Q` to detach without stopping the container.
 
-### `nohup docker attach <container_id> &`
+### 🛡️ `nohup docker attach <container_id> &`
 
 - **`nohup`**: Prevents the process from being terminated when the terminal closes.
 - **`docker attach <container_id>`**: Connects your terminal to a running Docker container's standard input, output, and error streams.
@@ -388,9 +388,29 @@ docker image tag myapp:latest johndoe/myapp:latest
 docker push johndoe/myapp:latest
 ```
 
-## Multi-Stage Docker Builds
+## 🏗️ Multi-Stage Docker Builds
 
 **Multi-Stage Docker Builds** allow you to use multiple `FROM` statements in a single Dockerfile to separate the **🔧 build environment** from the **🚀 runtime environment**.
+
+---
+
+## 🕵️‍♂️ Docker Scout: Image Analysis & Security
+
+Docker Scout helps you analyze, secure, and monitor your container images for vulnerabilities and best practices.
+
+### 🆕 `docker init`
+>
+> Initializes a new Docker project in your current directory. Sets up a starter Dockerfile and .dockerignore.
+
+### 🔎 `docker scout quickview <image_name>`
+>
+> Provides a quick summary of the image, including size, layers, and base image details.
+
+### 🛡️ `docker scout cves <image_name>`
+>
+> Scans the image for known vulnerabilities (CVEs) and provides a security report.
+
+---
 
 This approach helps create Docker images that are:
 
